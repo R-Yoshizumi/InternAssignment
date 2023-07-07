@@ -28,7 +28,6 @@ public class Paint : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            //Debug.Log("クリックした。");
             //Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             var pos = Input.mousePosition;
