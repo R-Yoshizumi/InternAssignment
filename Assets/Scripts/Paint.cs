@@ -24,8 +24,6 @@ public class Paint : MonoBehaviour
         var rect = image.gameObject.GetComponent<RectTransform>().rect;
         signTexture=new Texture2D((int)rect.width, (int)rect.height, TextureFormat.RGBA32, false);
         image.sprite = Sprite.Create(signTexture, new Rect(0, 0, signTexture.width, signTexture.height), Vector2.zero);
-        //image.sprite = signTexture;
-
     }
     
     Vector2 beforePos;
@@ -56,12 +54,15 @@ public class Paint : MonoBehaviour
             &&Input.mousePosition.y<1390&&Input.mousePosition.y>550)
         {
             afterPos = Input.mousePosition;
-            //座標がずれていたので一時的に調整
+            //座標がずれていたので絶対値で一時的に調整
             afterPos.x-=100;
             afterPos.y+=300;
+
+            Color black = new(0.0F, 0.0F, 0.0F,1.0F);
+            
             for(int i=brushMin; i<=brushMax;i++){
                 for(int j=brushMin; j<=brushMax;j++){
-                    signTexture.SetPixel((int)afterPos.x+i, (int)afterPos.y+j, Color.red);
+                    signTexture.SetPixel((int)afterPos.x+i, (int)afterPos.y+j, black);
                 }
             }
         }
