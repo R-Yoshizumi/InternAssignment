@@ -45,11 +45,16 @@ public class Paint : MonoBehaviour
             brushMax=brushSize/2;
         }
 
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0)
+            &&Input.mousePosition.x>110&&Input.mousePosition.x<940
+            &&Input.mousePosition.y<1390&&Input.mousePosition.y>550)
         {
             beforePos = Input.mousePosition;
         }
-        else if(Input.GetMouseButton(0)){
+        else if(Input.GetMouseButton(0)
+            &&Input.mousePosition.x>110&&Input.mousePosition.x<940
+            &&Input.mousePosition.y<1390&&Input.mousePosition.y>550)
+        {
             afterPos = Input.mousePosition;
             //座標がずれていたので一時的に調整
             afterPos.x-=100;
