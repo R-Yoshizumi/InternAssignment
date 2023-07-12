@@ -20,7 +20,6 @@ public class SaveSign : MonoBehaviour
 
         if (!Directory.Exists(directoryPath))
         {
-            //まだ存在してなかったら作成
             Directory.CreateDirectory(directoryPath);
             return directoryPath + "paint.png";
         }
