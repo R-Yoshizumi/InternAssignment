@@ -10,50 +10,49 @@ using System.IO;
 public class SaveSign : MonoBehaviour
 {    
     [SerializeField] Image image;
+    public int resizing_value=50;
     private const string IMAGE_SAVE_FOLDER = "Image";
+    
+
     public void OnClick(){
         TextureToPng(SavePath(IMAGE_SAVE_FOLDER));
     }
-
+    
     private string SavePath(string folderName){
         string directoryPath = Application.persistentDataPath + "/" + folderName + "/";
-
+        //ディレクトリがなかったら作成
         if (!Directory.Exists(directoryPath))
         {
             Directory.CreateDirectory(directoryPath);
-            return directoryPath + "sign.png";
+            return directoryPath;
         }
         Debug.Log(directoryPath+"に保存完了");
-
-        return directoryPath + "sign.png";
+        return directoryPath;
     } 
-
     private void TextureToPng(string path){
-        string directoryPath = Application.persistentDataPath + "/Image/";
+        //縮小サイズのテクスチャを生成
+        var resizedTexture = new Texture2D(resizing_value, resizing_value,TextureFormat.ARGB32, false);
+        resizedTexture = ResizeTexture(image.sprite.texture,resizing_value,resizing_value);
+        //エンコード
+        byte[] signPng=image.sprite.texture.EncodeToPNG();
+        byte[] resizePng = resizedTexture.EncodeToPNG();
 
-        var resizedTexture = new Texture2D(50, 50,TextureFormat.ARGB32, false);
-        
-        byte[] bytes=image.sprite.texture.EncodeToPNG();
-
-        
-        resizedTexture = ResizeTexture(image.sprite.texture,50,50);
-        byte[] resizeImage = resizedTexture.EncodeToPNG();
-
-
-        File.WriteAllBytes(directoryPath+"resize.png", resizeImage);
-        File.WriteAllBytes(path, bytes);
+        //保存
+        File.WriteAllBytes(path+"resize.png", resizePng);
+        File.WriteAllBytes(path+"sign.png", signPng);
     }
 
-    public Texture2D ResizeTexture(Texture2D src, int dst_w, int dst_h)
+    public Texture2D ResizeTexture(Texture2D texture, int width, int height)
     {
-	    Texture2D dst = new Texture2D(dst_w, dst_h, src.format, false);
+	    Texture2D dst = new Texture2D(width, height, texture.format, false);
 
-	    float inv_w = 1f / dst_w;
-	    float inv_h = 1f / dst_h;
+	    float dst_w = 1f / width;
+	    float dst_h = 1f / height;
 
-	    for (int y = 0; y < dst_h; ++y)
-		    for (int x = 0; x < dst_w; ++x)
-			    dst.SetPixel(x, y, src.GetPixelBilinear((float)x * inv_w, (float)y * inv_h));
+	    for (int y = 0; y < height; ++y)
+		    for (int x = 0; x < width; ++x)
+                //元画像を等間隔ずつセットしていく
+			    dst.SetPixel(x, y, texture.GetPixelBilinear((float)x * dst_w, (float)y * dst_h));
 
 	    return dst;
     }

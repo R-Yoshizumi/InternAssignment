@@ -59,7 +59,7 @@ public class Camera : MonoBehaviour
         Debug.Log(Application.dataPath+"に保存");
         #endif
     }
-    //サインの貼り付け関数（途中）
+    //サインの貼り付け関数
     public void Pasting(byte[] target,byte[] source){
 
         Texture2D loadTexture = new Texture2D(2,2);
@@ -71,12 +71,9 @@ public class Camera : MonoBehaviour
         Debug.Log("pixcels.Length"+pixels.Length);
 
         int a=0;
-        for(int i=0;i<pixels.Length;i++){            
-            if(i>=2500){
-                break;
-            }
-            if(i%50==0&&i>0){
-                a+=750;
+        for(int i=0;i<loadTexture.GetPixels().Length;i++){            
+            if(i%(int)Math.Sqrt((double)loadTexture.GetPixels().Length)==0&&i>0){
+                a+=webCam.width-(int)Math.Sqrt((double)loadTexture.GetPixels().Length);
             }
             pixels[a]=loadTexture.GetPixels()[i];
             a++;      
